@@ -10,14 +10,13 @@ const stringConcat = function (array, listName) {
   let options = listName === "custom" ? "Any" : "";
   // console.log("Array");
   // console.log(array);
-  if (array.some(checkEmptyArray)) {
+  const filterArray = array.filter(checkEmptyArray);
+  if (filterArray.length) {
     options =
       (listName === "blacklist" ? "blacklistFlags=" : "") +
-      array
+      filterArray
         .map((o, index) => {
-          if (o !== "") {
-            return String(o) + (index === array.length - 1 ? "" : ",");
-          }
+          return String(o) + (index === filterArray.length - 1 ? "" : ",");
         })
         .join("");
   }
@@ -27,8 +26,6 @@ const stringConcat = function (array, listName) {
 function useRandomJoke(custom, blacklist) {
   const [joke, setJoke] = useState("");
 
-  // console.log("Here");
-  // console.log(custom, blacklist);
   useEffect(() => {
     const loadJoke = async function () {
       try {
