@@ -1,6 +1,6 @@
 import "./styles.css";
 import useRandomJoke from "./jokeGenerator.js";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function App() {
   // Custom
@@ -10,7 +10,14 @@ export default function App() {
   const [pun, setPun] = useState("");
   const [spooky, setSpooky] = useState("");
   const [christmas, setChristmas] = useState("");
-  const custom = [programming, misc, dark, pun, spooky, christmas];
+  const [custom, setCustom] = useState([programming, misc, dark, pun, spooky, christmas]);
+
+  const programmingRef = useRef(null);
+  const miscRef = useRef(null);
+  const darkRef = useRef(null);
+  const punRef = useRef(null);
+  const spookyRef = useRef(null);
+  const christmasRef = useRef(null);
 
   // Blacklist
   const [religious, setReligious] = useState("");
@@ -19,113 +26,85 @@ export default function App() {
   const [sexist, setSexist] = useState("");
   const [explicit, setExplicit] = useState("");
   const [nsfw, setNsfw] = useState("");
-  const blacklist = [religious, political, racist, sexist, explicit, nsfw];
+  const [blacklist, setBlacklist] = useState([
+    religious,
+    political,
+    racist,
+    sexist,
+    explicit,
+    nsfw
+  ]);
+
+  const religiousRef = useRef(null);
+  const politicalRef = useRef(null);
+  const racistRef = useRef(null);
+  const sexistRef = useRef(null);
+  const explicitRef = useRef(null);
+  const nsfwRef = useRef(null);
 
   console.log(custom, blacklist);
   const joke = useRandomJoke(custom, blacklist);
 
-  const jokeHTML = document.querySelector(".joke");
-
-  // const getJoke() = function() {
-  //   set
-  // }
-
-  // useEffect(() => {
-  //   jokeHTML.textContent = { joke };
-  // });
+  const generateJoke = (e) => {
+    e.preventDefault();
+    programmingRef.current.checked
+      ? setProgramming(programmingRef.current.value)
+      : setProgramming("");
+    miscRef.current.checked ? setMisc(miscRef.current.value) : setMisc("");
+    darkRef.current.checked ? setDark(darkRef.current.value) : setDark("");
+    punRef.current.checked ? setPun(punRef.current.value) : setPun("");
+    spookyRef.current.checked ? setSpooky(spookyRef.current.value) : setSpooky("");
+    christmasRef.current.checked
+      ? setChristmas(christmasRef.current.value)
+      : setChristmas("");
+    religiousRef.current.checked
+      ? setReligious(religiousRef.current.value)
+      : setReligious("");
+    politicalRef.current.checked
+      ? setPolitical(politicalRef.current.value)
+      : setPolitical("");
+    racistRef.current.checked ? setRacist(racistRef.current.value) : setRacist("");
+    sexistRef.current.checked ? setSexist(sexistRef.current.value) : setSexist("");
+    explicitRef.current.checked
+      ? setExplicit(explicitRef.current.value)
+      : setExplicit("");
+    nsfwRef.current.checked ? setNsfw(nsfwRef.current.value) : setNsfw("");
+    setBlacklist([religious, political, racist, sexist, explicit, nsfw]);
+    setCustom([programming, misc, dark, pun, spooky, christmas]);
+  };
 
   return (
     <div className="App">
       <h1>Joke Generator</h1>
       <form>
         <h4> Custom </h4>
-        <input
-          type="checkbox"
-          id="progamming"
-          value="Progamming"
-          onChange={(e) => setProgramming(e.target.value)}
-        />
+        <input type="checkbox" id="progamming" value="Programming" ref={programmingRef} />
         <label>progamming</label>
-        <input
-          type="checkbox"
-          id="misc"
-          value="Misc"
-          onChange={(e) => setMisc(e.target.value)}
-        />
+        <input type="checkbox" id="misc" value="Misc" ref={miscRef} />
         <label>misc</label>
-        <input
-          type="checkbox"
-          id="dark"
-          value="Dark"
-          onChange={(e) => setDark(e.target.value)}
-        />
+        <input type="checkbox" id="dark" value="Dark" ref={darkRef} />
         <label>dark</label>
-        <input
-          type="checkbox"
-          id="pun"
-          value="Pun"
-          onChange={(e) => setPun(e.target.value)}
-        />
+        <input type="checkbox" id="pun" value="Pun" ref={punRef} />
         <label>pun</label>
-        <input
-          type="checkbox"
-          id="spooky"
-          value="Spooky"
-          onChange={(e) => setSpooky(e.target.value)}
-        />
+        <input type="checkbox" id="spooky" value="Spooky" ref={spookyRef} />
         <label>spooky</label>
-        <input
-          type="checkbox"
-          id="christmas"
-          value="Christmas"
-          onChange={(e) => setChristmas(e.target.value)}
-        />
+        <input type="checkbox" id="christmas" value="Christmas" ref={christmasRef} />
         <label>christmas</label>
         <h4> Blacklist </h4>
-        <input
-          type="checkbox"
-          id="religious"
-          value="religious"
-          onChange={(e) => setReligious(e.target.value)}
-        />
+        <input type="checkbox" id="religious" value="religious" ref={religiousRef} />
         <label>religious</label>
-        <input
-          type="checkbox"
-          id="political"
-          value="political"
-          onChange={(e) => setPolitical(e.target.value)}
-        />
+        <input type="checkbox" id="political" value="political" ref={politicalRef} />
         <label>political</label>
-        <input
-          type="checkbox"
-          id="racist"
-          value="racist"
-          onChange={(e) => setRacist(e.target.value)}
-        />
+        <input type="checkbox" id="racist" value="racist" ref={racistRef} />
         <label>racist</label>
-        <input
-          type="checkbox"
-          id="sexist"
-          value="sexist"
-          onChange={(e) => setSexist(e.target.value)}
-        />
+        <input type="checkbox" id="sexist" value="sexist" ref={sexistRef} />
         <label>sexist</label>
-        <input
-          type="checkbox"
-          id="explicit"
-          value="explicit"
-          onChange={(e) => setExplicit(e.target.value)}
-        />
+        <input type="checkbox" id="explicit" value="explicit" ref={explicitRef} />
         <label>explicit</label>
-        <input
-          type="checkbox"
-          id="nsfw"
-          value="nsfw"
-          onChange={(e) => setNsfw(e.target.value)}
-        />
+        <input type="checkbox" id="nsfw" value="nsfw" ref={nsfwRef} />
         <label>nsfw</label>
         <h4></h4>
-        <button onClick={useRandomJoke}>Generate Joke</button>
+        <button onClick={generateJoke}>Generate Joke</button>
         <h4></h4>
         <h4 className="joke"> {joke} </h4>
       </form>
